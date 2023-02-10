@@ -1,2 +1,27 @@
-# HealthWithPoseEstimation
-졸업프로젝트. Pose Estimation(포즈인식)을 이용한 헬스 프로그램입니다. /Graduation project. This is a health program using Pose Estimation.
+# HealthWithPoseEstimation(incomplete)
+
+졸업프로젝트. Pose Estimation(포즈인식)을 이용한 헬스 프로그램입니다. 
+
+>2023 1학기 캡스톤. 현재 진행중
+
+Graduation project. This is a health program using Pose Estimation.
+
+## [담주 계획]
+- 지현: 파이썬 오픈 포즈(웹 고려해서)
+- 륜경: 추천 알고리즘 연구
+- 서연: 웹 구축하기(파이썬 프레임워크쪽으로-github 공유), 운동 추천 분석
+
+
+## [작업 순서]
+기초- 사용 플랫폼 선택, 역할 나누기
+
+1. 기본 UI
+    -시작 화면, 화면을 누르면 어디로 이동하는지 등등
+2. 전문가 영상과 사용자 영상 비교
+    -어떤 기준으로 비교하고 표시할 지.
+3. 데이터 기록
+    -DB 테이블 구성, 서버 구현
+4. 기록(사용자) 기반 추천 ㅌㅌ알고리즘
+    -DB 내용을 바탕으로 알고리즘 짜기
+5. 세부 기능 추가
+    -재미 요소, 상품적 요소?
