@@ -1,0 +1,26 @@
+#에러 해결방법 정리
+
+conda : 'conda' 용어가 cmdlet, 함수, 스크립트 파일 또는 실행할 수 있는 프로그램 이름으로 인식되지 않습니
+다.
+상황: vscode의 powershell에서 conda 실행
+https://xlog.tistory.com/20
+Ctrl+shift+p->"terminal select default" 검색 후 선택->command prompt 선택
+
+
+'conda'은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는
+배치 파일이 아닙니다.
+상황: vscode의 cmd에서 conda 실행
+https://coding-nurse.tistory.com/230
+conda 환경변수 설정하기. 나의 경우 programdata쪽에 폴더가 있었음
+
+Collecting package metadata (current_repodata.json): failed
+CondaHTTPError: HTTP 000 CONNECTION FAILED for url <https://repo.anaconda.com/pkgs/main/win-64/current_repodata.json>
+Elapsed: -
+상황: conda 가상환경 생성
+anaconda prompt에서 생성하기
+
+
+python train_fullts.py --name MY_MODEL_NAME_local --dataroot MY_TRAINING_DATASET --checkpoints_dir WHERE_TO_SAVE_CHECKPOINTS --load_pretrain MY_MODEL_NAME_global --netG local --ngf 32 --num_D 3 --resize_or_crop none --no_instance --no_flip --tf_log --label_nc 6
+
+conda 명령어들
+https://bskyvision.com/entry/Win10Anacondapython-conda-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC

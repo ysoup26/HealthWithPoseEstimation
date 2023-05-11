@@ -1,0 +1,9 @@
+userId,bad_health_id,bad_health,score
+0,0,leg,2
+0,1,knee,1
+1,2,arm,0
+1,0,leg,1
+2,0,leg,2
+2,1,knee,1
+3,0,leg,2
+3,2,arm,0

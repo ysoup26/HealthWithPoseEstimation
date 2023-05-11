@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Human-Pose-Compare" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/openpose" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/openpose/3rdparty/caffe" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/openpose/3rdparty/pybind11" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/recommender_system_with_Python" vcs="Git" />
+  </component>
+</project>

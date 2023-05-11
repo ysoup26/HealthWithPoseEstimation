@@ -1,0 +1,6 @@
+#conda 가상환경 설치하기 
+conda create -n poseDance python=3.7
+conda activate
+conda init
+pip install dominate
+python train_fullts.py --name MY_MODEL_NAME_local --dataroot MY_TRAINING_DATASET --checkpoints_dir WHERE_TO_SAVE_CHECKPOINTS --load_pretrain MY_MODEL_NAME_global --netG local --ngf 32 --num_D 3 --resize_or_crop none --no_instance --no_flip --tf_log --label_nc 6
