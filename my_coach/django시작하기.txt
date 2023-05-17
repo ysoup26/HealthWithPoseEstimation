@@ -1,0 +1,28 @@
+[기초]
+1. 가상환경 설치 및 실행
+2. django 설치
+    pip install django
+3. django 프로젝트 생성
+    python -m django startproject /*프로젝트 이름*/
+4. 프로젝트 빌드
+    cd /*프로젝트 이름*/
+    python manage.py migrate  /*DB*/
+
+[실행]
+python manage.py runserver
+
+[js 사용하기]
+    https://rednooby.tistory.com/105
+    js, 이미지, 폰트등 로컬 파일들은 static 폴더로 다루어야 한다.
+    그냥 templates/앱/index.js를 가져오려고하면 django가 찾지 못한다
+1. 프로젝트의 settings.py 수정
+    STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]    #우측 코드 추가: static 폴더를 사용한다는 의미.
+    'DIRS': [],  -> 'DIRS': [BASE_DIR,'templates'],         #우측 코드로 변경
+2. templates 폴더 만들기
+    앱/static 폴더를 만든다. 그 외에도 css, img, fonts등 폴더를 만들어 관리한다.
+3. static 폴더 내 파일 사용하기
+    {% load static %}                                       #html 파일 가장 상단에 해당 코드를 추가한다.
+    src="/static/원하는폴더/원하는 파일"
+
++) 하나의 앱 내의 다른 html로 가고싶을때. 
+    button이나 a를 사용해서 주소값 주기. 해당 주소는 앱/urls.py에 작성한 것과 같음
