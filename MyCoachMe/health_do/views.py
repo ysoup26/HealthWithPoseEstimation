@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.staticfiles import finders
 import subprocess
-
+from .static.python.video_and_dict_pose_cross_correlation2 import video_and_dict_pose_cross_correlation
 
 # Create your views here.
 
@@ -13,9 +13,12 @@ def health_do(request):
 
 def health_report(request):
     print("[health_report]")
-    re = recommend_contentBased()
-    print(re)
-    return render(request,'health_do/health_report.html')
+    #
+    video_and_dict_pose_cross_correlation()
+    re1 = recommend_contentBased(["leg","head"])
+    re2 = recommend_collaborative(["leg","head"])
+    print(re1,re2)
+    return render(request,'health_do/health_report.html',{'recommend':re1})
 
 import pandas as pd #csv파일을 이용하기 위해
 import numpy as np
@@ -49,35 +52,30 @@ def category_recommendations(target_category, matrix, items, k=2):
     }
     return pd.DataFrame(d)    
     
-def recommend_contentBased():
+def recommend_contentBased(bodyparts):
     print("recommend_contentBased")
     file_path = finders.find('data/health_video_old.csv')
     video_data = pd.read_csv(file_path)
 
     tfidf_vector = TfidfVectorizer()
-    #tfidf_vector = TfidfVectorizer(ngram_range=(1,2))
-    #합치지 않으면 오류가 생겼음?
     tfidf_matrix = tfidf_vector.fit_transform(video_data['category'] ).toarray()
-    #tfidf_matrix = tfidf_vector.fit_transform(video_data)
     tfidf_matrix_feature = tfidf_vector.get_feature_names_out()
 
     tfidf_matrix = pd.DataFrame(tfidf_matrix, columns=tfidf_matrix_feature, index = video_data.title)
-    #print(tfidf_matrix.shape)
-    #tfidf_matrix.head()
 
     cosine_sim = cosine_similarity(tfidf_matrix)
 
     #타이틀-카테고리 표로 변환
     cosine_sim_df2 = pd.DataFrame(cosine_sim, index = video_data.title, columns = video_data.category)
-    #print(cosine_sim_df2.shape)
-    #cosine_sim_df2.head()
 
     #카테고리로 추천하기- 사용자가 부족한 운동으로
-    content_based_result =category_recommendations("leg", cosine_sim_df2, video_data)
+    content_based_result =category_recommendations(bodyparts[0], cosine_sim_df2, video_data)
 
     results_title = content_based_result.iloc[:,1]
-    # print("추천 영상은 다음과 같습니다: ",end=" ")
-    # for title in results_title:
-    #     print(title,end=", ")
     result_string = "추천 영상은 다음과 같습니다: " + ", ".join(results_title)
     return result_string
+
+def recommend_collaborative(bodyparts):
+    result_string = "추천 영상은 다음과 같습니다: " + ", "+"미정."#.join(results_title)
+    return result_string
+     
