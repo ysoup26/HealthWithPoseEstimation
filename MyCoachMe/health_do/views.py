@@ -40,8 +40,8 @@ def upload_video(request):
         #         file.write(chunk)
         
         # #유저와 전문가 운동비교
-        # cross_cor_result = video_and_dict_pose_cross_correlation(user_video_path,professor_video_name)
-        compare_result = "leg"
+        # compare_result = video_and_dict_pose_cross_correlation(user_video_path,professor_video_name)
+        compare_result = "leg" #테스트 용
         response_data = {
             'message': 'Video uploaded successfully.',
             'compare_result': compare_result

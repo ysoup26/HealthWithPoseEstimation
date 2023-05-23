@@ -26,6 +26,7 @@ const $btn_resume = document.querySelector('#btn_resume');
 const $btn_stop = document.querySelector('#btn_stop');
 const countdown = document.querySelector("#countdown");
 const countdownContainer = document.querySelector("#countdownContainer");
+const loading = document.querySelector("#loading");
 
 const arrVideoData = [];
 
@@ -80,6 +81,9 @@ function setupMediaRecorder() {
     // Blob 데이터를 FormData에 추가
         formData.append('video', videoBlob, 'user.mp4');
         formData.append('professor_video_name',professor_video_name);
+        
+        //*fetch요청전에 로딩창 보이게! 단순 이미지 표시가 아니라면 함수를 이용해도 좋을듯
+        loading.style.display = "block";
         
         // 서버로 데이터 전송
         fetch('/health_do/upload/', {
