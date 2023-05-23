@@ -4,6 +4,7 @@ from django.http import HttpResponseBadRequest
 from django.http import JsonResponse
 import time
 import os
+from health_do.models import Train_video
 from .static.python.video_and_dict_pose_cross_correlation2 import video_and_dict_pose_cross_correlation
 from .static.python.content_based import recommend_contentBased
 from .static.python.collaborative import recommend_collaborative
@@ -17,8 +18,10 @@ def health_do(request):
     #video_id를 request로 받고, 그 id로 db에 접근해 영상을 가져와야함.
     if request.method == 'GET' and request.GET.get('videoId'):
         videoId = request.GET['videoId']
-        print("videoId",videoId)
-        return render(request,'health_do/health_do.html',{'video_path':"/static/media/woodchop.mp4"})
+        #print("videoId",videoId)
+        video = Train_video.objects.filter(video_id=videoId)
+        #print(video,video[0].video_id,video[0].video_name)
+        return render(request,'health_do/health_do.html',{'video_path':"/static/media/"+video[0].video_name+".mp4"})
     else:
         return HttpResponseBadRequest('Invalid param') 
 
