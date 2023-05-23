@@ -1,0 +1,66 @@
+
+.main_body {
+    width: auto;
+    height: 100%;
+    background: #BDC2C3 url("images/background2.jpg") no-repeat top;
+    background-size: cover;
+}
+
+.main_title {
+    font-size: 100px;
+    color: white;
+    position: relative; /* h1 태그의 위치를 조정하기 위해 상대 위치 속성을 사용합니다 */
+    top: 200px; /* h1 태그를 위로 200px 이동시킵니다 */
+    text-align: center; /* h1 태그의 수평 정렬을 설정합니다 */
+    margin: 0 auto; /* 가운데 정렬을 위해 좌우 여백(margin)을 auto로 설정합니다 */
+    font-family: 'Noto Serif KR', serif;
+    text-shadow: -1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black;
+}
+
+.page_title {
+    font-size: 70px;
+    color: white;
+    position: relative; /* h1 태그의 위치를 조정하기 위해 상대 위치 속성을 사용합니다 */
+    top: 50px; /* h1 태그를 위로 200px 이동시킵니다 */
+    text-align: center; /* h1 태그의 수평 정렬을 설정합니다 */
+    margin: 0 auto; /* 가운데 정렬을 위해 좌우 여백(margin)을 auto로 설정합니다 */
+    font-family: 'Jua', sans-serif;
+    text-shadow: -1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black;
+}
+
+.container {
+    position: relative;
+    top: 250px;
+    border-radius: 4px;
+    text-align: center;
+    background-color: rgba(255,255,255,0.7);
+    margin: auto;
+    margin-bottom: 40px;
+    padding-left: 25px;
+    width: 500px;
+}
+
+.btn {
+  position: relative;
+  width: 120px;
+  padding: 0;
+  margin: 10px 20px 10px 0;
+  font-weight: 600;
+  text-align: center;
+  line-height: 50px;
+  font-size: 20px;
+  color: white;
+  border-radius: 5px;
+  transition: all 0.2s ;
+  display :inline-block;
+  font-family: 'Jua', sans-serif;
+
+}
+
+.btnBlueGreen {
+    background: #00AE68;
+}
+
+.btnFade.btnBlueGreen:hover {
+  background: #21825B;
+}
