@@ -35,13 +35,13 @@ def upload_video(request):
         print(user_video_path,professor_video_name)
         
         #유저 영상 데이터를 .mp4파일에 작성
-        # with open(user_video_path, 'wb') as file:
-        #     for chunk in user_video.chunks():
-        #         file.write(chunk)
+        with open(user_video_path, 'wb') as file:
+            for chunk in user_video.chunks():
+                file.write(chunk)
         
-        # #유저와 전문가 운동비교
-        # cross_cor_result = video_and_dict_pose_cross_correlation(user_video_path,professor_video_name)
-        compare_result = "leg"
+        # 유저와 전문가 운동비교
+        compare_result = video_and_dict_pose_cross_correlation(user_video_path,professor_video_name)
+        #compare_result = "leg"
         response_data = {
             'message': 'Video uploaded successfully.',
             'compare_result': compare_result
