@@ -1,3 +1,20 @@
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
 /*참고블로그: https://curryyou.tistory.com/447*/
 const $video_user = document.querySelector("#video_user");
 const $video_professor = document.querySelector("#video_professor");
@@ -14,6 +31,11 @@ const arrVideoData = [];
 
 let mediaStream,mediaRecorder;
 let isRecording = false;
+
+const pattern = /\/(\w+)\.mp4$/;
+const match = $video_professor.src.match(pattern);
+const professor_video_name = match && match[1];
+//console.log("extractedString:", extractedString);
 
 //User cam view start
 if (navigator.mediaDevices.getUserMedia) {
@@ -41,7 +63,7 @@ function setupMediaRecorder() {
       // 배열에 담아둔 녹화 데이터들을 통합한 Blob객체 생성
         const videoBlob = new Blob(arrVideoData);
     
-        let filename = "test.mp4";
+        let filename = "user.mp4";
         const file = new File([videoBlob], filename);
         console.log(videoBlob)
     
@@ -52,23 +74,28 @@ function setupMediaRecorder() {
         $video_record.src = blobURL;
         $video_record.play();
         
-        window.location.href = '/health_do/health_report';
+        //window.location.href = '/health_do/health_report';
         const formData = new FormData();
 
     // Blob 데이터를 FormData에 추가
-        formData.append('video', videoBlob, 'test.mp4');
-
+        formData.append('video', videoBlob, 'user.mp4');
+        formData.append('professor_video_name',professor_video_name);
+        
         // 서버로 데이터 전송
         fetch('/health_do/upload/', {
             method: 'POST',
             body: formData,
+            headers:{
+            'X-CSRFToken': csrftoken
+            }
         })
-        .then(response => {
-            // 응답 처리
-            console.log("응답?")
+        .then(response => response.json())
+        .then(data => {
+            const bad_body_part = data.compare_result; // 응답 데이터의 추가 데이터 추출
+            window.location.href = '/health_do/health_report?bad_body_part=' + bad_body_part; 
         })
         .catch(error => {
-            // 에러 처리
+            console.log('에러 발생', error);
         });
       // 기존 녹화 데이터 제거
       arrVideoData.splice(0);

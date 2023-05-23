@@ -258,40 +258,44 @@ def cal_cross_corr (dict):
 
     return diff_dict, max_index_dict
 
-
-
 # ===================================================================================================== #
 # 메인
-def video_and_dict_pose_cross_correlation():
+def video_and_dict_pose_cross_correlation(user_video_path,professor_video_name):
     try:
         # Import Openpose (Windows/Ubuntu/OSX)
-        dir_path = os.path.dirname(os.path.realpath(__file__)) + "/../../../openpose/python"
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        openpose_path = dir_path + "/../../../openpose/python"
         print("dir_path:",dir_path)
+        print("openpose_path:",openpose_path)
         try:
             # Change these variables to point to the correct folder (Release/x64 etc.)
-            sys.path.append(dir_path + '/../bin/python/openpose/Release');
-            os.environ['PATH']  = os.environ['PATH'] + ';' + dir_path + '/../x64/Release;' +  dir_path + '/../bin;'
+            sys.path.append(openpose_path + '/../bin/python/openpose/Release');
+            os.environ['PATH']  = os.environ['PATH'] + ';' + openpose_path + '/../x64/Release;' +  openpose_path + '/../bin;'
             import pyopenpose as op
         except ImportError as e:
             print('Error: OpenPose library could not be found. Did you enable `BUILD_PYTHON` in CMake and have this Python script in the right folder?')
             raise e
         start = time.time()
         # image paths
-        user_video_path = '../media/고관절돌리기.mp4'#'../user_videos/waist_good.mp4'
+        
+        #user_video_path = '../media/' #고관절돌리기.mp4'#'../user_videos/waist_good.mp4'
 
         # 이미지 읽기
         user_video = cv2.VideoCapture(user_video_path)
 
+        #professor_video_name = proffessor_video_name_to_real_video_name(professor_video_name)
         # 전문가 각도 pickle 경로
-        trainer_pickle = '../trainer_videos/angle_dict/waist_and_sidestep.pickle'
-
+        #trainer_pickle = dir_path+'../trainer_videos/angle_dict/'+professor_video_name+'.pickle'  #절대경로로 알려주기
+        trainer_pickle = os.path.join(dir_path, '../trainer_videos/angle_dict', professor_video_name + '.pickle')
+        print("pickle: ",trainer_pickle)
         #'../trainer_videos/angle_dict/waist_and_sidestep.pickle'
 
         # Custom Params (refer to include/openpose/flags.hpp for more parameters)
         params = dict()
-        params["model_folder"] = dir_path + "/../models/"
+        params["model_folder"] = openpose_path + "/../models/"
 
         # Starting OpenPose
+        print("[Openpose start]")
         opWrapper = op.WrapperPython()
         opWrapper.configure(params)
         opWrapper.start()
@@ -313,6 +317,7 @@ def video_and_dict_pose_cross_correlation():
 
         # Processing
         # angles_dict[1]에 유저의 각도 정보를 저장한다.
+        print("[user_video_read start]")
         while True :
             ret, frameToProcess = user_video.read()
 
@@ -357,43 +362,45 @@ def video_and_dict_pose_cross_correlation():
         max_body_key = max(crosscor_dict, key=crosscor_dict.get)
         end_frame = max_index_dict[max_body_key] + 300
 
+        #틀린 부분하나.
         print(max_body_key)
 
+        return max_body_key
         # 영상 틀어주기
-        center_dict[max_body_key] = center_dict[max_body_key][max_index_dict[max_body_key]:]
-        user_video.set(cv2.CAP_PROP_POS_FRAMES, max_index_dict[max_body_key])
-        i=0
-        while user_video.isOpened() and user_video.get(cv2.CAP_PROP_POS_FRAMES) < end_frame:
-            # print("while in")
-            ret, frame = user_video.read()
+        # center_dict[max_body_key] = center_dict[max_body_key][max_index_dict[max_body_key]:]
+        # user_video.set(cv2.CAP_PROP_POS_FRAMES, max_index_dict[max_body_key])
+        # i=0
+        # while user_video.isOpened() and user_video.get(cv2.CAP_PROP_POS_FRAMES) < end_frame:
+        #     # print("while in")
+        #     ret, frame = user_video.read()
 
-            if not ret:
-                print("not ret")
-                break
+        #     if not ret:
+        #         print("not ret")
+        #         break
 
-            if frame.shape[0] != 800:
-                height = 800
-                aspect_ratio = float(height) / frame.shape[0]
-                dsize = (int(frame.shape[1] * aspect_ratio), height)
-                frame = cv2.resize(frame, dsize, interpolation=cv2.INTER_AREA)
-
-
-            r = 15
-            c = (0, 0, 255)
-            cv2.circle(frame, center_dict[max_body_key][i], r, c, -1)
-            i = i+1
-            #cv2.imshow('wrong pose', frame)
-            if cv2.waitKey(25) & 0xFF == ord('q'):
-                print("quit")
-                break
+        #     if frame.shape[0] != 800:
+        #         height = 800
+        #         aspect_ratio = float(height) / frame.shape[0]
+        #         dsize = (int(frame.shape[1] * aspect_ratio), height)
+        #         frame = cv2.resize(frame, dsize, interpolation=cv2.INTER_AREA)
 
 
-        user_video.release()
+        #     r = 15
+        #     c = (0, 0, 255)
+        #     cv2.circle(frame, center_dict[max_body_key][i], r, c, -1)
+        #     i = i+1
+        #     #cv2.imshow('wrong pose', frame)
+        #     if cv2.waitKey(25) & 0xFF == ord('q'):
+        #         print("quit")
+        #         break
+
+
+        # user_video.release()
+        
         #cv2.destroyAllWindows()
 
         #end = time.time()
         #print("OpenPose demo successfully finished. Total time: " + str(end - start) + " seconds")
-
 
     except Exception as e:
         print(e)
