@@ -11,12 +11,11 @@
         </header>
         <nav></nav>
         <main>
-            <input type=button onClick="parent.location='health_do/'" value="운동테스트">
+            <input type=button onClick="parent.location='health_do/?videoId=1'" value="운동테스트">
             <input type=button onClick="parent.location='health_report/'" value="리포트테스트">
             <form method="POST">
                 {% csrf_token %}
-                입력: <input type="text">
-                {{POST}}
+                입력 테스트: <input type="text">
             </form>
         </main> 
         <footer>

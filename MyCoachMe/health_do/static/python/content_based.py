@@ -33,12 +33,12 @@ def category_recommendations(target_category, matrix, items, k=2):
 
 # import sys
 # print(sys.argv[0],sys.argv[1])
-def recommend_contentBased(bodyparts):
+def recommend_contentBased(bodypart):
     
-    dir_path = os.path.dirname(os.path.realpath(__file__))+ '/../data/health_video_old.csv'
+    dir_path = os.path.dirname(os.path.realpath(__file__))+ '/../csv/health_video_old.csv'
     print("dir_path:",dir_path)
     
-    video_data = pd.read_csv(dir_path)#'./../data/health_video_old.csv')
+    video_data = pd.read_csv(dir_path)#'./../csv/health_video_old.csv')
 
     tfidf_vector = TfidfVectorizer()
     #tfidf_vector = TfidfVectorizer(ngram_range=(1,2))
@@ -59,7 +59,7 @@ def recommend_contentBased(bodyparts):
     cosine_sim_df2.head()
 
     #카테고리로 추천하기- 사용자가 부족한 운동으로
-    content_based_result =category_recommendations(bodyparts[0], cosine_sim_df2, video_data)
+    content_based_result =category_recommendations(bodypart, cosine_sim_df2, video_data)
 
     results_title = content_based_result.iloc[:,1]
     

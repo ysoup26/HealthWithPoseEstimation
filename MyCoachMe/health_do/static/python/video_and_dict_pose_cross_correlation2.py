@@ -278,18 +278,12 @@ def video_and_dict_pose_cross_correlation(user_video_path,professor_video_name):
         start = time.time()
         # image paths
         
-        #user_video_path = '../media/' #고관절돌리기.mp4'#'../user_videos/waist_good.mp4'
-
         # 이미지 읽기
         user_video = cv2.VideoCapture(user_video_path)
 
-        #professor_video_name = proffessor_video_name_to_real_video_name(professor_video_name)
-        # 전문가 각도 pickle 경로
-        #trainer_pickle = dir_path+'../trainer_videos/angle_dict/'+professor_video_name+'.pickle'  #절대경로로 알려주기
         trainer_pickle = os.path.join(dir_path, '../trainer_videos/angle_dict', professor_video_name + '.pickle')
         print("pickle: ",trainer_pickle)
-        #'../trainer_videos/angle_dict/waist_and_sidestep.pickle'
-
+        
         # Custom Params (refer to include/openpose/flags.hpp for more parameters)
         params = dict()
         params["model_folder"] = openpose_path + "/../models/"

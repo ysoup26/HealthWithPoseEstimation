@@ -1,2 +1,2 @@
-def recommend_collaborative(bodyparts):
+def recommend_collaborative(bodypart):
     print("test.")

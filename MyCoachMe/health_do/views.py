@@ -1,27 +1,26 @@
 from django.shortcuts import render
 from django.contrib.staticfiles import finders
+from django.http import HttpResponseBadRequest
+from django.http import JsonResponse
 import time
 import os
 from .static.python.video_and_dict_pose_cross_correlation2 import video_and_dict_pose_cross_correlation
 from .static.python.content_based import recommend_contentBased
 from .static.python.collaborative import recommend_collaborative
 
-# Create your views here.
-
-
+#운동 비교나 추천 쪽은 파일 내에서 경로지정을 잘 해주어야 오류가 없다.
 
 def index(request):
-    if request.method == 'POST':
-        print("post")
-        return render(request, 'health_do/index.html', {'POST':'POST방식입니다!!'}) 
-    print("no post")
     return render(request,'health_do/index.html',)
 
 def health_do(request):
     #video_id를 request로 받고, 그 id로 db에 접근해 영상을 가져와야함.
-    return render(request,'health_do/health_do.html',{'video_path':"/static/media/woodchop.mp4"})
-
-from django.http import JsonResponse
+    if request.method == 'GET' and request.GET.get('videoId'):
+        videoId = request.GET['videoId']
+        print("videoId",videoId)
+        return render(request,'health_do/health_do.html',{'video_path':"/static/media/woodchop.mp4"})
+    else:
+        return HttpResponseBadRequest('Invalid param') 
 
 def upload_video(request):
     print("[POST-video]")
@@ -52,9 +51,12 @@ def upload_video(request):
 
 def health_report(request):
     print("[health_report]")
-    #
-    re1 = recommend_contentBased(["leg","head"])
-    re2 = recommend_collaborative(["leg","head"])
-    print(re1,re2)
-    return render(request,'health_do/health_report.html',{'recommend':re1})
- 
+    if request.method == 'GET' and request.GET.get('bad_body_part'):
+        bad = request.GET.get('bad_body_part')
+        re1 = recommend_contentBased(bad)
+        re2 = recommend_collaborative(bad)
+        print(re1,re2)
+        #return render(request,'health_do/health_report.html')
+        return render(request,'health_do/health_report.html',{'bad':bad,'recommend':re1})
+    else:
+        return HttpResponseBadRequest('Invalid request')       

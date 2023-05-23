@@ -1,3 +1,4 @@
+//django의 csrf 제한을 풀기 위한 부분.
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -15,17 +16,19 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 
-/*참고블로그: https://curryyou.tistory.com/447*/
+
+//비디오
 const $video_user = document.querySelector("#video_user");
 const $video_professor = document.querySelector("#video_professor");
-const $video_record = document.querySelector("#video_record");
-
+//운동 버튼
 const $btn_start = document.querySelector('#btn_start');
-const $btn_pause = document.querySelector('#btn_pause');
-const $btn_resume = document.querySelector('#btn_resume');
+const $btn_pause = document.querySelector('#btn_pause');    //제외가능
+const $btn_resume = document.querySelector('#btn_resume');  //제외가능
 const $btn_stop = document.querySelector('#btn_stop');
+//운동 시작 직후 카운트 다운
 const countdown = document.querySelector("#countdown");
 const countdownContainer = document.querySelector("#countdownContainer");
+//로딩
 const loading = document.querySelector("#loading");
 
 const arrVideoData = [];
@@ -33,12 +36,12 @@ const arrVideoData = [];
 let mediaStream,mediaRecorder;
 let isRecording = false;
 
+//비디오 파일로부터 비디오 이름만 추출하기 위한 부분(운동 비교시 필요)
 const pattern = /\/(\w+)\.mp4$/;
 const match = $video_professor.src.match(pattern);
 const professor_video_name = match && match[1];
-//console.log("extractedString:", extractedString);
 
-//User cam view start
+//캠화면 시작
 if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(function (stream) {
@@ -51,7 +54,7 @@ if (navigator.mediaDevices.getUserMedia) {
       });
 }
 
-// MediaRecorder set
+//레코더 설정
 function setupMediaRecorder() {
     mediaRecorder = new MediaRecorder(mediaStream);
     
@@ -61,49 +64,41 @@ function setupMediaRecorder() {
     }
   
     mediaRecorder.onstop = (event) => {
-      // 배열에 담아둔 녹화 데이터들을 통합한 Blob객체 생성
+       // 배열에 담아둔 녹화 데이터들을 통합한 Blob객체 생성
         const videoBlob = new Blob(arrVideoData);
     
         let filename = "user.mp4";
         const file = new File([videoBlob], filename);
         console.log(videoBlob)
     
-        // BlobURL(ObjectURL) 생성
-        const blobURL = window.URL.createObjectURL(videoBlob);
-    
-        // 녹화된 영상 재생: 두번째 video태그에서 재생
-        $video_record.src = blobURL;
-        $video_record.play();
-        
-        //window.location.href = '/health_do/health_report';
         const formData = new FormData();
 
-    // Blob 데이터를 FormData에 추가
+        //POST를 위한 Form 데이터
         formData.append('video', videoBlob, 'user.mp4');
         formData.append('professor_video_name',professor_video_name);
         
-        //*fetch요청전에 로딩창 보이게! 단순 이미지 표시가 아니라면 함수를 이용해도 좋을듯
+        /*로딩창 관련부분(임시)*/
         loading.style.display = "block";
         
-        // 서버로 데이터 전송
+        //서버로 데이터 전송 - 운동 비교를 위해
         fetch('/health_do/upload/', {
             method: 'POST',
             body: formData,
             headers:{
-            'X-CSRFToken': csrftoken
+            'X-CSRFToken': csrftoken /*필수*/ 
             }
         })
         .then(response => response.json())
         .then(data => {
-            const bad_body_part = data.compare_result; // 응답 데이터의 추가 데이터 추출
-            window.location.href = '/health_do/health_report?bad_body_part=' + bad_body_part; 
+            //응답 받은 내용으로 리포트 페이지 실행
+            const bad_body_part = data.compare_result; 
+            window.location.href = '/health_do/health_report?bad_body_part=' + encodeURIComponent(bad_body_part); 
         })
         .catch(error => {
             console.log('에러 발생', error);
         });
       // 기존 녹화 데이터 제거
       arrVideoData.splice(0);
-  
     }
 }
 
@@ -169,13 +164,14 @@ $btn_resume.onclick = (event) => {
             console.log("녹화 다시 시작");
             resumeMediaRecorder();
             $video_professor.play();
-                }
+        }
     },1000);
 
     
 };
 
-// 녹화 종료 이벤트 - 최종에선 필요하지 않지만, 오류 체크를 위한 기능
+// 전문가 영상 종료 이벤트
+// 일단은 스탑 버튼을 누를 때와 영상이 종료되었을때 둘다 운동 비교를 하게함.
 $btn_stop.onclick = (event)=>{
     console.log("녹화종료")
     mediaRecorder.stop();
