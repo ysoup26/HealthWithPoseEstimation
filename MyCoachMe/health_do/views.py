@@ -42,11 +42,22 @@ def upload_video(request):
         #         file.write(chunk)
         
         # #유저와 전문가 운동비교
-        # compare_result = video_and_dict_pose_cross_correlation(user_video_path,professor_video_name)
+        # compare_result,crosscor_dict,max_index_dict = video_and_dict_pose_cross_correlation(user_video_path,professor_video_name)
         compare_result = "leg" #테스트 용
+        crosscor_dict = {
+            'Rarm':3.5257,'Larm':2.5622,'Relbow':1.8114,'Lelbow':2.7587,'Rwaist':4.0121,'Lwaist':2.0482, 
+            'Rleg':1.7898,'Lleg':0.5642,'Rknee':2.9183,'Lknee':2.3859,  
+        }
+        max_index_dict = {
+            'Rarm':14,'Larm':0,'Relbow':5,'Lelbow':9,'Rwaist':6,'Lwaist':4, 
+            'Rleg':22 ,'Lleg':23,'Rknee':10,'Lknee':6,  
+        }
         response_data = {
             'message': 'Video uploaded successfully.',
-            'compare_result': compare_result
+            'compare_result': compare_result,
+            'crosscor_dict' : crosscor_dict, 
+            'max_index_dict': max_index_dict,
+            
         }
         return JsonResponse(response_data)
     
@@ -56,10 +67,12 @@ def health_report(request):
     print("[health_report]")
     if request.method == 'GET' and request.GET.get('bad_body_part'):
         bad = request.GET.get('bad_body_part')
+        crosscor_dict = request.GET.get('crosscor_dict') #그래프를 그리기 위해
+        max_index_dict = request.GET.get('max_index_dict')
+        #print(bad, crosscor_dict, max_index_dict)
         re1 = recommend_contentBased(bad)
         re2 = recommend_collaborative(bad)
-        print(re1,re2)
-        #return render(request,'health_do/health_report.html')
-        return render(request,'health_do/health_report.html',{'bad':bad,'recommend':re1})
+        #print(re1,re2)
+        return render(request,'health_do/health_report.html',{'bad':bad,'recommend-cont':re1,'recommend-coll':re2})
     else:
         return HttpResponseBadRequest('Invalid request')       

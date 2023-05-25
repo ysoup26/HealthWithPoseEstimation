@@ -359,7 +359,7 @@ def video_and_dict_pose_cross_correlation(user_video_path,professor_video_name):
         #틀린 부분하나.
         print(max_body_key)
 
-        return max_body_key
+        return max_body_key,crosscor_dict,max_index_dict
         # 영상 틀어주기
         # center_dict[max_body_key] = center_dict[max_body_key][max_index_dict[max_body_key]:]
         # user_video.set(cv2.CAP_PROP_POS_FRAMES, max_index_dict[max_body_key])
