@@ -343,23 +343,32 @@ def video_and_dict_pose_cross_correlation(user_video_path,professor_video_name):
         print("\n")
 
         #print(angles_dict)
-
+        #부위별 차이의 평균, 부위별 최대 차이의 인덱스
         crosscor_dict, max_index_dict = cal_cross_corr(angles_dict)
+        
+        new_crosscor_dict = {}
+        #부위별 차이 딕셔너리 LR 통합
+        for key, value in crosscor_dict.items():
+            new_key = key[1:]  # R 또는 L을 제외한 부분을 새로운 키로 사용
+            if new_key in new_crosscor_dict:
+                new_crosscor_dict[new_key] += value
+            else:
+                new_crosscor_dict[new_key] = value
+        
         #print("\n")
-        print(crosscor_dict)
-        print(max_index_dict)
+        print(new_crosscor_dict)
 
         end = time.time()
         print("Total time: " + str(end - start) + " seconds")
 
         # 가장 많이 틀린 부분 찾기
-        max_body_key = max(crosscor_dict, key=crosscor_dict.get)
+        max_body_key = max(new_crosscor_dict, key=new_crosscor_dict.get)
         end_frame = max_index_dict[max_body_key] + 300
 
         #틀린 부분하나.
         print(max_body_key)
 
-        return max_body_key,crosscor_dict,max_index_dict
+        return max_body_key,new_crosscor_dict
         # 영상 틀어주기
         # center_dict[max_body_key] = center_dict[max_body_key][max_index_dict[max_body_key]:]
         # user_video.set(cv2.CAP_PROP_POS_FRAMES, max_index_dict[max_body_key])
