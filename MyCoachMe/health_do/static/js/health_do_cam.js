@@ -94,14 +94,17 @@ function setupMediaRecorder() {
             const badBodyPart = data.compare_result;
             const crosscorDict = data.crosscor_dict;
             const user_img = data.user_img;
-            console.log(badBodyPart,crosscorDict,user_img)
+            const user_img_rec = data.user_img_rec;
+            console.log(crosscorDict)
             // JSON 데이터를 URL 쿼리 문자열로 변환- 긴 데이터는 인코딩 하였음.
             const queryParams = '?bad_body_part=' + encodeURIComponent(badBodyPart) +
-                                '&crosscor_dict=' + encodeURIComponent(JSON.stringify(crosscorDict)) +
-                                '&user_img=' + encodeURIComponent(user_img);
+                                '&crosscor_dict=' + encodeURIComponent(JSON.stringify(crosscorDict).replace(/"([^"]+)":/g, "'$1':")) +
+                                '&user_img=' + encodeURIComponent(user_img) +
+                                '&user_img_rec=' + encodeURIComponent(user_img_rec);
 
             // 새로운 URL로 이동
             //window.location.reload(true);
+            console.log(queryParams)
             window.location.href = '/health_do/health_report' + queryParams;
         })
         .catch(error => {

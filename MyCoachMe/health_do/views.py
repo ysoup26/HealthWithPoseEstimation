@@ -9,6 +9,7 @@ from .static.python.video_and_dict_pose_cross_correlation2 import video_and_dict
 from .static.python.content_based import recommend_contentBased
 from .static.python.collaborative import recommend_collaborative
 import json
+import ast
 #운동 비교나 추천 쪽은 파일 내에서 경로지정을 잘 해주어야 오류가 없다.
 
 def index(request):
@@ -37,14 +38,12 @@ def upload_video(request):
         print(user_video_path,professor_video_name)
         
         #유저 영상 데이터를 .mp4파일에 작성
-        # with open(user_video_path, 'wb') as file:
-        #     for chunk in user_video.chunks():
-        #         file.write(chunk)
+        #
         
         # #유저와 전문가 운동비교
-        #compare_result,crosscor_dict = video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professor_video_name)
-        compare_result = "arm" #테스트 용
-        crosscor_dict = {'arm': 6.0879, 'elbow': 4.5701, 'waist': 6.0603, 'leg': 2.354, 'knee': 5.3042}
+        compare_result,crosscor_dict = video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professor_video_name)
+        #compare_result = "arm" #테스트 용
+        #crosscor_dict = {'arm': 6.0879, 'elbow': 4.5701, 'waist': 6.0603, 'leg': 2.354, 'knee': 5.3042}
         response_data = {
             'message': 'Video uploaded successfully.',
             'compare_result': compare_result,
@@ -53,6 +52,7 @@ def upload_video(request):
             'user_img_rec' : user_file_name+'_rec',
             
         }
+        #print('[]:',crosscor_dict)
         #response_data_json = json.dumps(response_data) 
         #return JsonResponse(response_data_json, safe=False)
         return JsonResponse(response_data)
@@ -63,14 +63,16 @@ def health_report(request):
     print("[health_report]")
     if request.method == 'GET' and request.GET.get('bad_body_part'):
         bad = request.GET.get('bad_body_part')
-        crosscor_dict = request.GET.get('crosscor_dict') #그래프를 그리기 위해
+        crosscor_dict = ast.literal_eval(request.GET.get('crosscor_dict', '{}'))##request.GET.get('crosscor_dict') #그래프를 그리기 위해
         user_img = request.GET.get('user_img')
         user_img_csv = request.GET.get('user_img_rec')
         
-        print('[test:',crosscor_dict,user_img,user_img_csv)
+    
+        #print(crosscor_dict)
+        #print('[test:',crosscor_dict,user_img,user_img_csv)
         ##테스트를 위한 임시 딕셔너리
         #crosscor_dict = {'arm': 6.0879, 'elbow': 4.5701, 'waist': 6.0603, 'leg': 2.354, 'knee': 5.3042}
-        
+        #crosscor_dict = {'arm': 1.9662850522427884, 'elbow': 2.9816855583889645, 'waist': 3.843841443066744, 'leg': 5.358204912667498, 'knee': 3.196237020562813}
         percent_dict = {}
 
         min_value = 0  # 최소값 계산
@@ -97,7 +99,7 @@ def health_report(request):
         
         return render(request,'health_do/health_report.html',{
             'bad':bad,'bad_percent':percent_dict,
-            'bad_img:':user_img,'bad_img_rec:':user_img_csv,
+            'bad_img':user_img,'bad_img_rec':user_img_csv,
             'rec_cont':rec1,'rec_coll':rec2
             ,'rec_cont_videoId':rec1_video[0].video_id,'rec_coll_videoId':rec2_video[0].video_id})
     else:
