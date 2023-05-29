@@ -90,25 +90,15 @@ function setupMediaRecorder() {
         })
         .then(response => response.json())
         .then(data => {
-            //응답 받은 내용으로 리포트 페이지 실행
-            /*
-            const bad_body_part = data.compare_result; 
-            console.log(data.crosscor_dict,data.max_index_dict)
-            //window.location.href = '/health_do/health_report?bad_body_part=' + encodeURIComponent(bad_body_part); 
-            const reportData = {
-                bad_body_part: data.compare_result,
-                crossocor: data.crosscor_dict,
-                max_index: data.max_index_dict,
-            };
-        })*/
+            //응답 받은 내용으로 리포트 페이지 수행
             const badBodyPart = data.compare_result;
             const crosscorDict = data.crosscor_dict;
-            const maxIndexDict = data.max_index_dict;
+            const user_img = data.user_img;
 
-            // JSON 데이터를 URL 쿼리 문자열로 변환
+            // JSON 데이터를 URL 쿼리 문자열로 변환- 긴 데이터는 인코딩 하였음.
             const queryParams = '?bad_body_part=' + encodeURIComponent(badBodyPart) +
                                 '&crosscor_dict=' + encodeURIComponent(JSON.stringify(crosscorDict)) +
-                                '&max_index_dict=' + encodeURIComponent(JSON.stringify(maxIndexDict));
+                                '&user_img=' + encodeURIComponent(user_img);
 
             // 새로운 URL로 이동
             window.location.href = '/health_do/health_report' + queryParams;

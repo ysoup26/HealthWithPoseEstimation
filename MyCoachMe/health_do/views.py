@@ -18,9 +18,7 @@ def health_do(request):
     #video_id를 request로 받고, 그 id로 db에 접근해 영상을 가져와야함.
     if request.method == 'GET' and request.GET.get('videoId'):
         videoId = request.GET['videoId']
-        #print("videoId",videoId)
         video = Train_video.objects.filter(video_id=videoId)
-        #print(video,video[0].video_id,video[0].video_name)
         return render(request,'health_do/health_do.html',{'video_path':"/static/media/"+video[0].video_name+".mp4"})
     else:
         return HttpResponseBadRequest('Invalid param') 
@@ -31,8 +29,10 @@ def upload_video(request):
         user_video = request.FILES['video']     #녹화된 유저 영상 데이터
         professor_video_name = request.POST['professor_video_name'] 
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        now = int(time.time())
-        user_video_path = dir_path +'/static/user_videos/user_'+str(now)+'.mp4'
+        now = str(int(time.time()))
+        user_file_name = 'user_'+now
+        user_video_path = dir_path +'/static/user_videos/'+user_file_name+'.mp4'
+        user_img_path = dir_path +'/static/user_images/'+user_file_name+'.jpg'
         
         print(user_video_path,professor_video_name)
         
@@ -42,17 +42,14 @@ def upload_video(request):
         #         file.write(chunk)
         
         # #유저와 전문가 운동비교
-        # compare_result,crosscor_dict = video_and_dict_pose_cross_correlation(user_video_path,professor_video_name)
+        ##compare_result,crosscor_dict = video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professor_video_name)
         compare_result = "arm" #테스트 용
-        # crosscor_dict = {
-        #     'Rarm':3.5257,'Larm':2.5622,'Relbow':1.8114,'Lelbow':2.7587,'Rwaist':4.0121,'Lwaist':2.0482, 
-        #     'Rleg':1.7898,'Lleg':0.5642,'Rknee':2.9183,'Lknee':2.3859,  
-        # }
         crosscor_dict = {'arm': 6.0879, 'elbow': 4.5701, 'waist': 6.0603, 'leg': 2.354, 'knee': 5.3042}
         response_data = {
             'message': 'Video uploaded successfully.',
             'compare_result': compare_result,
             'crosscor_dict' : crosscor_dict, 
+            'user_img' : user_file_name,
             
         }
         return JsonResponse(response_data)
@@ -64,19 +61,10 @@ def health_report(request):
     if request.method == 'GET' and request.GET.get('bad_body_part'):
         bad = request.GET.get('bad_body_part')
         crosscor_dict = request.GET.get('crosscor_dict') #그래프를 그리기 위해
+        user_img = request.GET.get('user_img')
         
         #테스트를 위한 임시 딕셔너리
-        # crosscor_dict = {
-        #     'Rarm':3.5257,'Larm':2.5622,'Relbow':1.8114,'Lelbow':2.7587,'Rwaist':4.0121,'Lwaist':2.0482, 
-        #     'Rleg':1.7898,'Lleg':0.5642,'Rknee':2.9183,'Lknee':2.3859,  
-        # }
-        # max_index_dict = {
-        #     'Rarm':14,'Larm':0,'Relbow':5,'Lelbow':9,'Rwaist':6,'Lwaist':4, 
-        #     'Rleg':22 ,'Lleg':23,'Rknee':10,'Lknee':6,  
-        # }
         crosscor_dict = {'arm': 6.0879, 'elbow': 4.5701, 'waist': 6.0603, 'leg': 2.354, 'knee': 5.3042}
-        #max_index_dict = {'arm': 14, 'elbow': 14, 'waist': 10, 'leg': 45, 'knee': 16}
-        #print("출력:",bad, crosscor_dict, max_index_dict)
         
         percent_dict = {}
 
@@ -88,14 +76,20 @@ def health_report(request):
             normalized_value = (value - min_value) / (max_value - min_value)  # 최소값과 최대값 사이의 비율로 정규화
             percent = int(normalized_value * 100)  # 퍼센트 계산
             percent_dict[key] = percent
-        print('dict:',percent_dict)
 
-        re1 = recommend_contentBased(bad)
-        re2 = recommend_collaborative(bad)
+        rec1 = recommend_contentBased(bad)
+        rec2 = recommend_collaborative(bad)
         bad = eng2kor(bad)
-        print(re1,re2)
         
-        return render(request,'health_do/health_report.html',{'bad':bad,'bad_percent':percent_dict,'recommend_cont':re1,'recommend_coll':re2})
+        rec1_video = Train_video.objects.filter(video_name=rec1)
+        rec2_video = Train_video.objects.filter(video_name=rec2)
+        
+        
+        return render(request,'health_do/health_report.html',{
+            'bad':bad,'bad_percent':percent_dict,
+            'bad_img:':user_img,'bad_img_rec:':user_img,
+            'rec_cont':rec1,'rec_coll':rec2
+            ,'rec_cont_videoId':rec1_video[0].video_id,'rec_coll_videoId':rec1_video[0].video_id})
     else:
         return HttpResponseBadRequest('Invalid request')
     

@@ -260,13 +260,17 @@ def cal_cross_corr (dict):
 
 # ===================================================================================================== #
 # 메인
-def video_and_dict_pose_cross_correlation(user_video_path,professor_video_name):
+def video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professor_video_name):
+    print("img:",user_img_path)
+    
     try:
         # Import Openpose (Windows/Ubuntu/OSX)
         dir_path = os.path.dirname(os.path.realpath(__file__))
         openpose_path = dir_path + "/../../../openpose/python"
-        print("dir_path:",dir_path)
-        print("openpose_path:",openpose_path)
+        new_crosscor_dict = {}
+        max_body_key =""
+        #print("dir_path:",dir_path)
+        #print("openpose_path:",openpose_path)
         try:
             # Change these variables to point to the correct folder (Release/x64 etc.)
             sys.path.append(openpose_path + '/../bin/python/openpose/Release');
@@ -282,7 +286,6 @@ def video_and_dict_pose_cross_correlation(user_video_path,professor_video_name):
         user_video = cv2.VideoCapture(user_video_path)
 
         trainer_pickle = os.path.join(dir_path, '../trainer_videos/angle_dict', professor_video_name + '.pickle')
-        print("pickle: ",trainer_pickle)
         
         # Custom Params (refer to include/openpose/flags.hpp for more parameters)
         params = dict()
@@ -299,8 +302,6 @@ def video_and_dict_pose_cross_correlation(user_video_path,professor_video_name):
         POSE_PAIRS = op.getPosePartPairs(op.BODY_25)
         index_names = copy.deepcopy(BODY_PARTS)
         index_names.pop(25)
-
-
 
         angles_dict = {0: {}, 1: {}}       # 각도를 저장하는 dict
         center_dict = {}  # 점 그릴 중심 좌표 저장하는 dict
@@ -338,15 +339,20 @@ def video_and_dict_pose_cross_correlation(user_video_path,professor_video_name):
             angles_dict[1] = get_body_angle(human, angles_dict[1])
             # 점 찍을 좌표 구해두기
             center_dict = get_body_center_value(human, center_dict)
-
-
-        print("\n")
-
+            
         #print(angles_dict)
         #부위별 차이의 평균, 부위별 최대 차이의 인덱스
         crosscor_dict, max_index_dict = cal_cross_corr(angles_dict)
         
-        new_crosscor_dict = {}
+        ##테스트용 dict
+        # crosscor_dict = {
+        #     'Rarm':3.5257,'Larm':2.5622,'Relbow':1.8114,'Lelbow':2.7587,'Rwaist':4.0121,'Lwaist':2.0482, 
+        #     'Rleg':1.7898,'Lleg':0.5642,'Rknee':2.9183,'Lknee':2.3859,  
+        # }
+        # max_index_dict = {
+        #     'Rarm':14,'Larm':0,'Relbow':5,'Lelbow':9,'Rwaist':6,'Lwaist':4, 
+        #     'Rleg':22 ,'Lleg':23,'Rknee':10,'Lknee':6,  
+        # }
         #부위별 차이 딕셔너리 LR 통합
         for key, value in crosscor_dict.items():
             new_key = key[1:]  # R 또는 L을 제외한 부분을 새로운 키로 사용
@@ -356,56 +362,41 @@ def video_and_dict_pose_cross_correlation(user_video_path,professor_video_name):
                 new_crosscor_dict[new_key] = value
         
         #print("\n")
-        print(new_crosscor_dict)
+        
 
         end = time.time()
         print("Total time: " + str(end - start) + " seconds")
 
         # 가장 많이 틀린 부분 찾기
+        max_body_LRkey = max(crosscor_dict, key=crosscor_dict.get)
         max_body_key = max(new_crosscor_dict, key=new_crosscor_dict.get)
-        end_frame = max_index_dict[max_body_key] + 300
-
-        #틀린 부분하나.
-        print(max_body_key)
-
-        return max_body_key,new_crosscor_dict
-        # 영상 틀어주기
-        # center_dict[max_body_key] = center_dict[max_body_key][max_index_dict[max_body_key]:]
-        # user_video.set(cv2.CAP_PROP_POS_FRAMES, max_index_dict[max_body_key])
-        # i=0
-        # while user_video.isOpened() and user_video.get(cv2.CAP_PROP_POS_FRAMES) < end_frame:
-        #     # print("while in")
-        #     ret, frame = user_video.read()
-
-        #     if not ret:
-        #         print("not ret")
-        #         break
-
-        #     if frame.shape[0] != 800:
-        #         height = 800
-        #         aspect_ratio = float(height) / frame.shape[0]
-        #         dsize = (int(frame.shape[1] * aspect_ratio), height)
-        #         frame = cv2.resize(frame, dsize, interpolation=cv2.INTER_AREA)
-
-
-        #     r = 15
-        #     c = (0, 0, 255)
-        #     cv2.circle(frame, center_dict[max_body_key][i], r, c, -1)
-        #     i = i+1
-        #     #cv2.imshow('wrong pose', frame)
-        #     if cv2.waitKey(25) & 0xFF == ord('q'):
-        #         print("quit")
-        #         break
-
-
-        # user_video.release()
+        end_frame = max_index_dict[max_body_LRkey] + 300        
         
-        #cv2.destroyAllWindows()
+        #오차가 가장 큰 프레임 하나 저장
+        center_dict[max_body_LRkey] = center_dict[max_body_LRkey][max_index_dict[max_body_LRkey]:]
+        user_video.set(cv2.CAP_PROP_POS_FRAMES, max_index_dict[max_body_LRkey])
+        
+        ret, frame = user_video.read()
 
-        #end = time.time()
-        #print("OpenPose demo successfully finished. Total time: " + str(end - start) + " seconds")
+        if ret:
+            if frame.shape[0] != 800:
+                height = 800
+                aspect_ratio = float(height) / frame.shape[0]
+                dsize = (int(frame.shape[1] * aspect_ratio), height)
+                frame = cv2.resize(frame, dsize, interpolation=cv2.INTER_AREA)
 
+            r = 15
+            c = (0, 0, 255)
+            #cv2.circle(frame, center_dict[max_body_LRkey][0], r, c, -1)
+
+            cv2.imwrite(user_img_path, frame)
+        else:
+            print("Error reading frame.")
+        
+        print("[img save done]")
     except Exception as e:
         print(e)
+        raise e
     
-    return 0
+    print("new_dict&max_body_key",new_crosscor_dict,max_body_key)
+    return max_body_key,new_crosscor_dict
