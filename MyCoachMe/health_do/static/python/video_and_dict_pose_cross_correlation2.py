@@ -313,6 +313,7 @@ def video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professo
         # Processing
         # angles_dict[1]에 유저의 각도 정보를 저장한다.
         print("[user_video_read start]")
+        frame_count = 0
         while True :
             ret, frameToProcess = user_video.read()
 
@@ -323,6 +324,11 @@ def video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professo
             if not ret:
                 break
 
+            frame_count += 1  # 프레임 수 증가
+
+            # 일정 프레임 수에 도달하면 루프 탈출
+            if frame_count >= 30:
+                break 
             # 이미지 높이를 800으로 바꾸고, 너비도 그에 맞추어 변경
             if frameToProcess.shape[0] != 800 :
                 height = 800
@@ -387,9 +393,9 @@ def video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professo
 
             r = 15
             c = (0, 0, 255)
-            #cv2.circle(frame, center_dict[max_body_LRkey][0], r, c, -1)
-
-            cv2.imwrite(user_img_path, frame)
+            cv2.imwrite(user_img_path+'.jpg', frame)
+            cv2.circle(frame, center_dict[max_body_LRkey][0], r, c, -1)
+            cv2.imwrite(user_img_path+'_rec.jpg', frame)
         else:
             print("Error reading frame.")
         
