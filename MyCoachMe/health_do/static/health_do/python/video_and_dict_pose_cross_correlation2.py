@@ -266,7 +266,7 @@ def video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professo
     try:
         # Import Openpose (Windows/Ubuntu/OSX)
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        openpose_path = dir_path + "/../../../openpose/python"
+        openpose_path = dir_path + "/../../../../openpose/python"
         new_crosscor_dict = {}
         max_body_key =""
         #print("dir_path:",dir_path)

@@ -26,7 +26,8 @@ const $btn_start = document.querySelector('#btn_start');
 //const $btn_resume = document.querySelector('#btn_resume');  //제외가능
 const $btn_stop = document.querySelector('#btn_stop');
 //운동 시작 직후 카운트 다운
-var countdownElement = document.getElementById('countdown');
+const countdown = document.querySelector("#countdown");
+const countdownContainer = document.querySelector("#countdownContainer");
 
 //로딩
 const loading = document.querySelector("#loading");
@@ -135,20 +136,17 @@ function resumeMediaRecorder() {
 //3초 동안 대기 후 -> 전문가 영상 시작, 녹화 시작
 $btn_start.onclick = (event)=>{
     setupMediaRecorder();
-    var counter = 3;
-    countdownElement.innerHTML = counter;
-    
-    //countdownContainer.style.display = "block";
-    //countdown.textContent = count;
+    var count = 3;
+    countdownContainer.style.display = "block";
+    countdown.textContent = count;
 
     const countdownInterval = setInterval(()=>{
-        counter--;
-        countdownElement.innerHTML = counter;
-        //countdown.textContent = count;
-        if( counter == 0){
+        count--;
+        countdown.textContent = count;
+        if( count == 0){
             clearInterval(countdownInterval);
-            countdownElement.innerHTML = "운동 시작! 운동을 종료하고 싶으면 운동 끝 버튼을 누르세요!"
-            //countdownContainer.style.display = "none";
+            //countdownElement.innerHTML = "운동 시작! 운동을 종료하고 싶으면 운동 끝 버튼을 누르세요!"
+            countdownContainer.style.display = "none";
             console.log("녹화시작")
             mediaRecorder.start(); // 3초 후에 녹화 시작
             console.log("운동시작")
@@ -193,12 +191,10 @@ $btn_start.onclick = (event)=>{
 $btn_stop.onclick = (event)=>{
     console.log("녹화종료")
     mediaRecorder.stop();
-    countdownElement.innerHTML = "운동 수고하셨습니다!"
 }
 $video_professor.onended = (event)=>{
     console.log("녹화종료")
     mediaRecorder.stop();
-    countdownElement.innerHTML = "운동 수고하셨습니다!"
 }
 
 

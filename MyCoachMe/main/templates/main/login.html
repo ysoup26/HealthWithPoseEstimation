@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <!--link rel="stylesheet" href="{% static 'polls/style.css' %}"-->
-    <link rel="stylesheet" href='../../static/main/style.css'>
+    {% load static %}
+<!--    <link rel="stylesheet" href="{% static 'polls/style.css' %}">-->
+<!--    <link rel="stylesheet" href='../../static/main/style.css'>-->
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <title>나의 코치, 나 로그인</title>
 </head>
 <body class="main_body">
-<h1 class="page_title">로그인</h1>
+<h1 class="page_title">나의 코치, 나</h1>
+<div class="container">
+  <form method = "POST">
+    {% csrf_token %}
+<!--    <h1> login </h1>-->
+      <label class="text">아이디</label>
+    <br>
+    <input name = "username" type = "text" value="" class="text">
+    <br>
+    <label class="text">비밀번호</label>
+    <br>
+    <input name = "password" type="password" value="" class="text">
+    <br>
+    <br>
+    <input class="btn btnBlue" type="submit" value="로그인">
+  </form>
+  </div>
 </body>
 </html>

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>나의 코치, 나 운동 선택</title>
-    <link rel="stylesheet" href='../../static/main/select_style.css'>
+<!--    <link rel="stylesheet" href='../../static/main/select_style.css'>-->
+    <link rel="stylesheet" href="{% static 'main/css/select_style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
@@ -19,56 +21,64 @@
 <div class="imgs_container">
     <a href="{% url 'health_do/1'}">
         <section class="img_box">
-            <!--<img src="{% static 'thumnails/backkick.jpg" alt="뒤로차기 스텝 앤 로우">-->
-            <img src="../../static/main/thumnails/backkick.jpg" alt="뒤로차기 스텝 앤 로우">
+            <img src="{% static 'main/thumnails/backkick.jpg' %}" alt="뒤로차기 스텝 앤 로우">
+<!--            <img src="../../static/main/thumnails/backkick.jpg" alt="뒤로차기 스텝 앤 로우">-->
             <label>뒤로차기 스텝&로우</label>
         </section>
     </a>
-    <a href="{% url 'health_do/2'}">
+    <a href="/healthdo/2/{{ user_id }}/loading">
         <section class="img_box">
-            <img src="../../static/main/thumnails/boomerang.jpg" alt="부메랑">
+            <img src="{% static 'main/thumnails/boomerang.jpg' %}" alt="부메랑">
+<!--            <img src="../../static/main/thumnails/boomerang.jpg" alt="부메랑">-->
             <label>부메랑</label>
         </section>
     </a>
     <a href="{% url 'health_do/3'}">
     <section class="img_box">
-        <img src="../../static/main/thumnails/crosskneeup.jpg" alt="크로스 니업">
+        <img src="{% static 'main/thumnails/crosskneeup.jpg' %}" alt="크로스 니업">
+<!--        <img src="../../static/main/thumnails/crosskneeup.jpg" alt="크로스 니업">-->
         <label>크로스 니업</label>
     </section>
     </a>
     <a href="{% url 'health_do/4'}">
     <section class="img_box">
-        <img src="../../static/main/thumnails/standingkneeup.jpg" alt="스탠딩 니업">
+        <img src="{% static 'main/thumnails/standingkneeup.jpg' %}" alt="스탠딩 니업">
+<!--        <img src="../../static/main/thumnails/standingkneeup.jpg" alt="스탠딩 니업">-->
         <label>스탠딩 니업</label>
     </section>
     </a>
     <a href="{% url 'health_do/5'}">
     <section class="img_box">
-        <img src="../../static/main/thumnails/swing_waist.jpg" alt="고관절 돌리기">
+        <img src="{% static 'main/thumnails/swing_waist.jpg' %}" alt="고관절 돌리기">
+<!--        <img src="../../static/main/thumnails/swing_waist.jpg" alt="고관절 돌리기">-->
         <label>고관절 돌리기</label>
     </section>
     </a>
     <a href="{% url 'health_do/6'}">
     <section class="img_box">
-        <img src="../../static/main/thumnails/TFlystep.jpg" alt="T 플라이 스텝">
+        <img src="{% static 'main/thumnails/TFlystep.jpg' %}" alt="T 플라이 스텝">
+<!--        <img src="../../static/main/thumnails/TFlystep.jpg" alt="T 플라이 스텝">-->
         <label>T 플라이 스텝</label>
     </section>
     </a>
     <a href="{% url 'health_do/7'}">
     <section class="img_box">
-        <img src="../../static/main/thumnails/uppercut.jpg" alt="어퍼컷 펀치">
+        <img src="{% static 'main/thumnails/uppercut.jpg' %}" alt="어퍼컷 펀치">
+<!--        <img src="../../static/main/thumnails/uppercut.jpg" alt="어퍼컷 펀치">-->
         <label>어퍼컷 펀치</label>
     </section>
     </a>
     <a href="{% url 'health_do/8'}">
     <section class="img_box">
-        <img src="../../static/main/thumnails/waist.jpg" alt="옆구리 늘리기 앤 사이드스텝">
+        <img src="{% static 'main/thumnails/waist.jpg' %}" alt="옆구리 늘리기 앤 사이드스텝">
+<!--        <img src="../../static/main/thumnails/waist.jpg" alt="옆구리 늘리기 앤 사이드스텝">-->
         <label>옆구리 늘리기&사이드스텝</label>
     </section>
     </a>
     <a href="{% url 'health_do/9'}">
     <section class="img_box">
-        <img src="../../static/main/thumnails/woodchop.jpg" alt="우드촙 변형">
+        <img src="{% static 'main/thumnails/woodchop.jpg' %}" alt="우드촙 변형">
+<!--        <img src="../../static/main/thumnails/woodchop.jpg" alt="우드촙 변형">-->
         <label>우드촙 변형</label>
     </section>
     </a>

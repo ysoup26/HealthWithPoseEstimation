@@ -21,7 +21,7 @@
     font-size: 70px;
     color: white;
     position: relative; /* h1 태그의 위치를 조정하기 위해 상대 위치 속성을 사용합니다 */
-    top: 50px; /* h1 태그를 위로 200px 이동시킵니다 */
+    top: 100px;
     text-align: center; /* h1 태그의 수평 정렬을 설정합니다 */
     margin: 0 auto; /* 가운데 정렬을 위해 좌우 여백(margin)을 auto로 설정합니다 */
     font-family: 'Jua', sans-serif;
@@ -29,6 +29,18 @@
 }
 
 .container {
+    position: relative;
+    top: 120px;
+    border-radius: 4px;
+    text-align: center;
+    background-color: rgba(255,255,255,0.7);
+    margin: auto;
+    margin-bottom: 40px;
+    padding-left: 25px;
+    width: 500px;
+}
+
+.main_container {
     position: relative;
     top: 250px;
     border-radius: 4px;
@@ -57,10 +69,28 @@
 
 }
 
-.btnBlueGreen {
-    background: #00AE68;
+.btnBlue {
+   background: #3C89FF;
 }
 
-.btnFade.btnBlueGreen:hover {
-  background: #21825B;
+.btnBlue:hover {
+  background: #1A58B7;
+}
+
+.btnGray {
+   background: #646F82;
+}
+
+.btnGray:hover {
+  background: #455060;
+}
+
+.text {
+    font-family: 'Gamja Flower', cursive;
+    font-size: 24px;
+    color: black;
+}
+
+.input_box {
+    margin: 0px 15px 15px 0px;
 }

@@ -1,7 +1,7 @@
 openpose-1.7.0/openpose
 
-MyCoachMe/health_do/static/media
-MyCoachMe/health_do/static/user_videos/
-MyCoachMe/health_do/static/user_images/
+MyCoachMe/health_do/static/health_do/media
+MyCoachMe/health_do/static/health_do/user_videos/
+MyCoachMe/health_do/static/health_do/user_images/
 
 MyCoachMe/openpose

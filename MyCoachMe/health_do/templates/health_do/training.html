@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href='/static/css/style.css'>
-    <link rel="stylesheet" href='/static/css/loading_style.css'>
+    <link rel="stylesheet" href="{% static 'health_do/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'health_do/css/loading_style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
@@ -20,9 +20,12 @@
         <label class="explain">운동 시작 버튼을 누르고 3초 기다린 후 운동을 시작하세요.</label>
     </div>
     <div class="btns_grid">
-        <label id="countdown" class="font_style">먼저 운동 시작 버튼을 누르세요!</label>
-        <button id="btn_start" class="font_style btn btnBlue">운동 시작</button>
-        <button id="btn_stop" class="font_style btn btnGray">운동 끝</button>
+                <button id="btn_start" class="font_style btn btnBlue">운동 시작</button>
+                <button id="btn_stop" class="font_style btn btnGray">운동 끝</button>
+    </div>
+    <div id="countdownContainer" style="display:none;position:fixed;top:50%;left:50%;width:30%;transform: translate(-50%, -50%);background-color: rgba(255, 255, 255, 0.8);;
+    border:2px solid black;padding:20px;font-size:48px;text-align:center;font-family: 'Gamja Flower', cursive;">
+            <span id="countdown"></span>
     </div>
 
     <div class="loading_box">
@@ -43,7 +46,7 @@
                 <video id="video_user" width="100%" autoplay class="video_style"></video>
             </div>
             <div style="flex:2;text-align:center;">
-                <video id="video_professor" src={{video_path}} class="video_style" width="50%" muted ></video>
+                <video id="video_professor" src="{% static video_path %}" class="video_style" width="50%" muted ></video>
             </div>
         </div>
         <div style="display: flex;width:100%">
@@ -76,6 +79,6 @@
         </div>
     </main>
      -->
-    <script src="/static/js/training_cam.js"></script>
+    <script src="{% static 'health_do/js/training_cam.js' %}"></script>
 </body>
 </html>

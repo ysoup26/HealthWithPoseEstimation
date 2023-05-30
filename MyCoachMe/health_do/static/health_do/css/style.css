@@ -13,7 +13,7 @@
     position: relative;
     border-radius: 10px;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     padding-left: 25px;
     padding-top: 15px;
     padding-bottom: 5px;
@@ -33,7 +33,7 @@
 
 .btn {
   position: relative;
-  //width: 120px;
+  width: 200px;
   padding: 0;
   margin: 10px 20px 10px 0;
   font-weight: 600;
@@ -63,10 +63,12 @@
 }
 
 .btns_grid {
+    width: 400px;
     text-align: center;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 20px;
+    margin: 0 auto;
 }
 
 .video_box {

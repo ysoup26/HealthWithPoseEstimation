@@ -5,9 +5,9 @@ from django.http import JsonResponse
 import time
 import os
 from health_do.models import Train_video
-from .static.python.video_and_dict_pose_cross_correlation2 import video_and_dict_pose_cross_correlation
-from .static.python.content_based import recommend_contentBased
-from .static.python.collaborative import recommend_collaborative
+from .static.health_do.python.video_and_dict_pose_cross_correlation2 import video_and_dict_pose_cross_correlation
+from .static.health_do.python.content_based import recommend_contentBased
+from .static.health_do.python.collaborative import recommend_collaborative
 import json
 import ast
 #운동 비교나 추천 쪽은 파일 내에서 경로지정을 잘 해주어야 오류가 없다.
@@ -21,8 +21,9 @@ def training(request):
     if request.method == 'GET' and request.GET.get('videoId'):
         videoId = request.GET['videoId']
         video = Train_video.objects.filter(video_id=videoId)
-        #시연용
-        return render(request,'health_do/training.html',{'video_path':"/static/trainer_videos/"+video[0].video_name+".mp4"})
+        video_path = 'health_do/trainer_videos/'+video[0].video_name+'.mp4' #시연용
+        #video_path = 'health_do/media/'+video[0].video_name+'.mp4'
+        return render(request, 'health_do/training.html', {'video_path': video_path})
         #return render(request,'health_do/training.html',{'video_path':"/static/media/"+video[0].video_name+".mp4"})
     else:
         return HttpResponseBadRequest('Invalid param') 
@@ -35,8 +36,9 @@ def upload_video(request):
         dir_path = os.path.dirname(os.path.realpath(__file__))
         now = str(int(time.time()))
         user_file_name = 'user_'+now
-        user_video_path = dir_path +'/static/user_videos/'+user_file_name+'.mp4'
-        user_img_path = dir_path +'/static/user_images/'+user_file_name #기본과 rec 버전 2개를 저장하기 위해 파일명까지만 함
+        print("d:",dir_path)
+        user_video_path = dir_path +'/static/health_do/user_videos/'+user_file_name+'.mp4'
+        user_img_path = dir_path +'/static/health_do/user_images/'+user_file_name #기본과 rec 버전 2개를 저장하기 위해 파일명까지만 함
         
         print(user_video_path,professor_video_name)
         
