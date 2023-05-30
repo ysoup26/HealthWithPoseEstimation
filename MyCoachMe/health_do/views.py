@@ -15,12 +15,15 @@ import ast
 def index(request):
     return render(request,'health_do/index.html',)
 
-def health_do(request):
+#swing_waist로 테스트
+def training(request):
     #video_id를 request로 받고, 그 id로 db에 접근해 영상을 가져와야함.
     if request.method == 'GET' and request.GET.get('videoId'):
         videoId = request.GET['videoId']
         video = Train_video.objects.filter(video_id=videoId)
-        return render(request,'health_do/health_do.html',{'video_path':"/static/media/"+video[0].video_name+".mp4"})
+        #시연용
+        return render(request,'health_do/training.html',{'video_path':"/static/trainer_videos/"+video[0].video_name+".mp4"})
+        #return render(request,'health_do/training.html',{'video_path':"/static/media/"+video[0].video_name+".mp4"})
     else:
         return HttpResponseBadRequest('Invalid param') 
 
@@ -33,17 +36,19 @@ def upload_video(request):
         now = str(int(time.time()))
         user_file_name = 'user_'+now
         user_video_path = dir_path +'/static/user_videos/'+user_file_name+'.mp4'
-        user_img_path = dir_path +'/static/user_images/'+user_file_name #
+        user_img_path = dir_path +'/static/user_images/'+user_file_name #기본과 rec 버전 2개를 저장하기 위해 파일명까지만 함
         
         print(user_video_path,professor_video_name)
         
         #유저 영상 데이터를 .mp4파일에 작성
-        #
+        with open(user_video_path, 'wb') as file:
+            for chunk in user_video.chunks():
+                file.write(chunk)
         
         # #유저와 전문가 운동비교
         compare_result,crosscor_dict = video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professor_video_name)
-        #compare_result = "arm" #테스트 용
-        #crosscor_dict = {'arm': 6.0879, 'elbow': 4.5701, 'waist': 6.0603, 'leg': 2.354, 'knee': 5.3042}
+        ##compare_result = "arm" #테스트 용
+        ##crosscor_dict = {'arm': 6.0879, 'elbow': 4.5701, 'waist': 6.0603, 'leg': 2.354, 'knee': 5.3042}
         response_data = {
             'message': 'Video uploaded successfully.',
             'compare_result': compare_result,
@@ -67,11 +72,11 @@ def health_report(request):
         user_img = request.GET.get('user_img')
         user_img_csv = request.GET.get('user_img_rec')
         
-    
         #print(crosscor_dict)
         #print('[test:',crosscor_dict,user_img,user_img_csv)
+        
         ##테스트를 위한 임시 딕셔너리
-        #crosscor_dict = {'arm': 6.0879, 'elbow': 4.5701, 'waist': 6.0603, 'leg': 2.354, 'knee': 5.3042}
+        #bad='leg'
         #crosscor_dict = {'arm': 1.9662850522427884, 'elbow': 2.9816855583889645, 'waist': 3.843841443066744, 'leg': 5.358204912667498, 'knee': 3.196237020562813}
         percent_dict = {}
 

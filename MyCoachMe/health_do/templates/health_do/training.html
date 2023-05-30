@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href='/static/css/style.css'>
+    <link rel="stylesheet" href='/static/css/loading_style.css'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Main</title>
+</head>
+<body>
+
+    <div class="title_box">
+        <h1 class="page_title">운동하기</h1>
+        <label class="explain">운동 시작 버튼을 누르고 3초 기다린 후 운동을 시작하세요.</label>
+    </div>
+    <div class="btns_grid">
+        <label id="countdown" class="font_style">먼저 운동 시작 버튼을 누르세요!</label>
+        <button id="btn_start" class="font_style btn btnBlue">운동 시작</button>
+        <button id="btn_stop" class="font_style btn btnGray">운동 끝</button>
+    </div>
+
+    <div class="loading_box">
+        <div class="loadingio-spinner-spin-1ftyz6tdt2z"><div class="ldio-8g26t8wd8uq">
+        <div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div>
+        </div></div>
+        <br>
+        <label class="font_style">방금 운동에 대한 리포트를 작성하는 중입니다....</label>
+        <br>
+        <label class="font_style">휴식을 취하며 작업이 완료될 때까지 기다려주세요.</label>
+    </div>
+    <!--<div class="loading_box">    
+    </div>-->
+    
+    <main class="video_box">
+        <div style="display: flex;width:100%">
+            <div style="flex:1;">
+                <video id="video_user" width="100%" autoplay class="video_style"></video>
+            </div>
+            <div style="flex:2;text-align:center;">
+                <video id="video_professor" src={{video_path}} class="video_style" width="50%" muted ></video>
+            </div>
+        </div>
+        <div style="display: flex;width:100%">
+            <div style="flex:1;text-align:center;">
+                <label style="color: white;text-align:center;"  class="font_style">당신의 모습</label>
+            </div>
+            <div style="flex:2;text-align:center;">
+                <label style="color: white;" class="font_style">따라하세요!</label>
+            </div>
+        </div>
+    </main>
+<!--     
+    <main style="border: solid black 1px;">
+        <button id="btn_start">운동시작</button>
+        <button id="btn_pause">운동일시정지</button>
+        <button id="btn_resume">운동재시작</button>
+        <button id="btn_stop">운동종료</button>
+        <div id="countdownContainer" style="display:none;position:fixed;top:50%;left:50%;width:30%;transform: translate(-50%, -50%);background-color: rgba(255, 255, 255, 0.8);;border:2px solid black;padding:20px;font-size:48px;text-align:center;">
+            <span id="countdown" ></span>
+        </div>
+        <img  id="loading" src="/static/img/loading.png" style="display:none;position:fixed;top:50%;left:50%;width:30%;transform: translate(-50%, -50%);">
+        
+        <div style="display: flex;width:100%">
+            <div style="flex:1;">
+                <video id="video_user" width="100%" autoplay></video>
+            </div>
+            <div style="flex:1;text-align:center;">
+                <video id="video_professor" src={{video_path}} width="100%"muted></video>
+            </div>
+        </div>
+    </main>
+     -->
+    <script src="/static/js/training_cam.js"></script>
+</body>
+</html>

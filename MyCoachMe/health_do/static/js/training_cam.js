@@ -22,14 +22,16 @@ const $video_user = document.querySelector("#video_user");
 const $video_professor = document.querySelector("#video_professor");
 //운동 버튼
 const $btn_start = document.querySelector('#btn_start');
-const $btn_pause = document.querySelector('#btn_pause');    //제외가능
-const $btn_resume = document.querySelector('#btn_resume');  //제외가능
+//const $btn_pause = document.querySelector('#btn_pause');    //제외가능
+//const $btn_resume = document.querySelector('#btn_resume');  //제외가능
 const $btn_stop = document.querySelector('#btn_stop');
 //운동 시작 직후 카운트 다운
-const countdown = document.querySelector("#countdown");
-const countdownContainer = document.querySelector("#countdownContainer");
+var countdownElement = document.getElementById('countdown');
+
 //로딩
 const loading = document.querySelector("#loading");
+var loadingBox = document.querySelector('.loading_box');
+        
 
 const arrVideoData = [];
 
@@ -78,8 +80,8 @@ function setupMediaRecorder() {
         formData.append('professor_video_name',professor_video_name);
         
         /*로딩창 관련부분(임시)*/
-        loading.style.display = "block";
-        
+        //loading.style.display = "block";
+        loadingBox.style.display = 'block';
         //서버로 데이터 전송 - 운동 비교를 위해
         fetch('/health_do/upload/', {
             method: 'POST',
@@ -133,17 +135,20 @@ function resumeMediaRecorder() {
 //3초 동안 대기 후 -> 전문가 영상 시작, 녹화 시작
 $btn_start.onclick = (event)=>{
     setupMediaRecorder();
-    let count = 3;
+    var counter = 3;
+    countdownElement.innerHTML = counter;
     
-    countdownContainer.style.display = "block";
-    countdown.textContent = count;
+    //countdownContainer.style.display = "block";
+    //countdown.textContent = count;
 
     const countdownInterval = setInterval(()=>{
-        count--;
-        countdown.textContent = count;
-        if( count == 0){
+        counter--;
+        countdownElement.innerHTML = counter;
+        //countdown.textContent = count;
+        if( counter == 0){
             clearInterval(countdownInterval);
-            countdownContainer.style.display = "none";
+            countdownElement.innerHTML = "운동 시작! 운동을 종료하고 싶으면 운동 끝 버튼을 누르세요!"
+            //countdownContainer.style.display = "none";
             console.log("녹화시작")
             mediaRecorder.start(); // 3초 후에 녹화 시작
             console.log("운동시작")
@@ -153,45 +158,47 @@ $btn_start.onclick = (event)=>{
     },1000);
 }
 
-//녹화 일시 정지 이벤트
-$btn_pause.onclick = (event)=>{
-    console.log("녹화 일시 정지")
-    pauseMediaRecorder();
-    $video_professor.pause();
+// //녹화 일시 정지 이벤트
+// $btn_pause.onclick = (event)=>{
+//     console.log("녹화 일시 정지")
+//     pauseMediaRecorder();
+//     $video_professor.pause();
 
-}
-// 녹화 다시 시작 이벤트
-//+)다시 시작하기전 3초정도 대기해야함.
-$btn_resume.onclick = (event) => {
-    let count = 3;
+// }
+// // 녹화 다시 시작 이벤트
+// //+)다시 시작하기전 3초정도 대기해야함.
+// $btn_resume.onclick = (event) => {
+//     let count = 3;
     
-    countdownContainer.style.display = "block";
-    countdown.textContent = count;
+//     countdownContainer.style.display = "block";
+//     countdown.textContent = count;
 
-    const countdownInterval = setInterval(()=>{
-        count--;
-        countdown.textContent = count;
-        if( count == 0){
-            clearInterval(countdownInterval);
-            countdownContainer.style.display = "none";
-            console.log("녹화 다시 시작");
-            resumeMediaRecorder();
-            $video_professor.play();
-        }
-    },1000);
+//     const countdownInterval = setInterval(()=>{
+//         count--;
+//         countdown.textContent = count;
+//         if( count == 0){
+//             clearInterval(countdownInterval);
+//             countdownContainer.style.display = "none";
+//             console.log("녹화 다시 시작");
+//             resumeMediaRecorder();
+//             $video_professor.play();
+//         }
+//     },1000);
 
     
-};
+// };
 
 // 전문가 영상 종료 이벤트
 // 일단은 스탑 버튼을 누를 때와 영상이 종료되었을때 둘다 운동 비교를 하게함.
 $btn_stop.onclick = (event)=>{
     console.log("녹화종료")
     mediaRecorder.stop();
+    countdownElement.innerHTML = "운동 수고하셨습니다!"
 }
 $video_professor.onended = (event)=>{
     console.log("녹화종료")
     mediaRecorder.stop();
+    countdownElement.innerHTML = "운동 수고하셨습니다!"
 }
 
 
