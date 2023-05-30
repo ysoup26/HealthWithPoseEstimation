@@ -2,7 +2,7 @@
 .main_body {
     width: auto;
     height: 100%;
-    background: #BDC2C3 url("images/background2.jpg") no-repeat top;
+    background: #BDC2C3 url("../images/background2.jpg") no-repeat top;
     background-size: cover;
 }
 
@@ -93,4 +93,10 @@
 
 .input_box {
     margin: 0px 15px 15px 0px;
+}
+
+.warning {
+    font-family: 'Gamja Flower', cursive;
+    font-size: 24px;
+    color: red;
 }

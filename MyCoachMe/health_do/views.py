@@ -15,14 +15,17 @@ import ast
 def index(request):
     return render(request,'health_do/index.html',)
 
+def loading(request):
+    return render(request,'health_do/loading.html',)
+
 #swing_waist로 테스트
 def training(request):
     #video_id를 request로 받고, 그 id로 db에 접근해 영상을 가져와야함.
     if request.method == 'GET' and request.GET.get('videoId'):
         videoId = request.GET['videoId']
         video = Train_video.objects.filter(video_id=videoId)
-        video_path = 'health_do/trainer_videos/'+video[0].video_name+'.mp4' #시연용
-        #video_path = 'health_do/media/'+video[0].video_name+'.mp4'
+        #video_path = 'health_do/trainer_videos/'+video[0].video_name+'.mp4' #시연용
+        video_path = 'health_do/media/'+video[0].video_name+'.mp4'
         return render(request, 'health_do/training.html', {'video_path': video_path})
         #return render(request,'health_do/training.html',{'video_path':"/static/media/"+video[0].video_name+".mp4"})
     else:
@@ -48,9 +51,9 @@ def upload_video(request):
                 file.write(chunk)
         
         # #유저와 전문가 운동비교
-        compare_result,crosscor_dict = video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professor_video_name)
-        ##compare_result = "arm" #테스트 용
-        ##crosscor_dict = {'arm': 6.0879, 'elbow': 4.5701, 'waist': 6.0603, 'leg': 2.354, 'knee': 5.3042}
+        #compare_result,crosscor_dict = video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professor_video_name)
+        compare_result = "arm" #테스트 용
+        crosscor_dict = {'arm': 6.0879, 'elbow': 4.5701, 'waist': 6.0603, 'leg': 2.354, 'knee': 5.3042}
         response_data = {
             'message': 'Video uploaded successfully.',
             'compare_result': compare_result,
@@ -114,26 +117,26 @@ def health_report(request):
     
 def eng2kor(bad_body):
     if bad_body == "Rarm" or bad_body == "Larm":
-        bad_body = "팔"
+        bad_body = "팔꿈치 위 팔"
     elif bad_body == "Relbow" or bad_body == "Lelbow":
-        bad_body = "팔꿈치"
+        bad_body = "팔꿈치 아래 팔"
     elif bad_body == "Rwaist" or bad_body == "Lwaist":
         bad_body = "허리"
     elif bad_body == "Rleg" or bad_body == "Lleg": 
-        bad_body = "다리" 
+        bad_body = "허벅지" 
     elif bad_body == "Rknee" or bad_body == "Lknee":
-        bad_body = "발목"
+        bad_body = "종아리"
         
     elif bad_body == "arm": 
-        bad_body = "팔"
+        bad_body = "팔꿈치 위 팔"
     elif bad_body == "elbow":
-        bad_body = "팔꿈치"
+        bad_body = "팔꿈치 아래 팔"
     elif bad_body == "waist":
         bad_body = "허리"
     elif bad_body == "leg": 
-        bad_body = "다리" 
+        bad_body = "허벅지" 
     elif bad_body == "knee":
-        bad_body = "발목"
+        bad_body = "종아리"
     # if bad_body == "Rarm":
     #     bad_body = "팔"
     # elif bad_body == "Larm": 

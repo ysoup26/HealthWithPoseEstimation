@@ -79,4 +79,36 @@
     border-radius: 10px;
     border: 1px solid white;
 }
+.report_box {
+    border-radius: 10px;
+    border: 1px solid #48AAE1;
+    padding: 30px;
+    text-align: center;
+}
+.report_txt {
+    font-family: 'Gamja Flower', cursive;
+    color: black;
+    font-size: 24px;
+}
 
+.graph_title {
+    text-align: center;
+    background-color: #48AAE1;
+    color: white;
+    border-radius: 5px;
+    padding-left: 25px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 25px;
+    margin-bottom: 20px;
+}
+
+.recommending {
+    width: 70%;
+    text-align: center;
+    font-family: 'Gamja Flower', cursive;
+    color: black;
+    font-size: 20px;
+    margin: 0 auto;
+
+}

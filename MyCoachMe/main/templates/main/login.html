@@ -4,7 +4,7 @@
     {% load static %}
 <!--    <link rel="stylesheet" href="{% static 'polls/style.css' %}">-->
 <!--    <link rel="stylesheet" href='../../static/main/style.css'>-->
-    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
@@ -20,7 +20,8 @@
   <form method = "POST">
     {% csrf_token %}
 <!--    <h1> login </h1>-->
-      <label class="text">아이디</label>
+    <label class="warning"> {{error}} </label>
+    <label class="text">아이디</label>
     <br>
     <input name = "username" type = "text" value="" class="text">
     <br>

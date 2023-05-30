@@ -6,6 +6,7 @@
     <title>나의 코치, 나 운동 선택</title>
 <!--    <link rel="stylesheet" href='../../static/main/select_style.css'>-->
     <link rel="stylesheet" href="{% static 'main/css/select_style.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/loading_style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
@@ -18,64 +19,73 @@
     <h1 class="page_title">운동 선택</h1>
     <label class="explain">하고싶은 운동을 클릭하세요.</label>
 </div>
+<div class="loading_box">
+    <div class="loadingio-spinner-spin-1ftyz6tdt2z"><div class="ldio-8g26t8wd8uq">
+    <div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div>
+    </div></div>
+    <br>
+    <label class="font_style">영상을 준비하는 중입니다....</label>
+    <br>
+    <label class="font_style">충분히 몸을 풀며 기다려주세요.</label>
+</div>
 <div class="imgs_container">
-    <a href="{% url 'health_do/1'}">
+    <a href=''  onclick="delayedRedirect('/health_do/training/?videoId=1'); return false;">
         <section class="img_box">
             <img src="{% static 'main/thumnails/backkick.jpg' %}" alt="뒤로차기 스텝 앤 로우">
 <!--            <img src="../../static/main/thumnails/backkick.jpg" alt="뒤로차기 스텝 앤 로우">-->
             <label>뒤로차기 스텝&로우</label>
         </section>
     </a>
-    <a href="/healthdo/2/{{ user_id }}/loading">
+    <a href=''  onclick="delayedRedirect('/health_do/training/?videoId=2'); return false;">
         <section class="img_box">
             <img src="{% static 'main/thumnails/boomerang.jpg' %}" alt="부메랑">
 <!--            <img src="../../static/main/thumnails/boomerang.jpg" alt="부메랑">-->
             <label>부메랑</label>
         </section>
     </a>
-    <a href="{% url 'health_do/3'}">
+    <a href=''  onclick="delayedRedirect('/health_do/training/?videoId=3'); return false;">
     <section class="img_box">
         <img src="{% static 'main/thumnails/crosskneeup.jpg' %}" alt="크로스 니업">
 <!--        <img src="../../static/main/thumnails/crosskneeup.jpg" alt="크로스 니업">-->
         <label>크로스 니업</label>
     </section>
     </a>
-    <a href="{% url 'health_do/4'}">
+    <a href=''  onclick="delayedRedirect('/health_do/training/?videoId=4'); return false;">
     <section class="img_box">
         <img src="{% static 'main/thumnails/standingkneeup.jpg' %}" alt="스탠딩 니업">
 <!--        <img src="../../static/main/thumnails/standingkneeup.jpg" alt="스탠딩 니업">-->
         <label>스탠딩 니업</label>
     </section>
     </a>
-    <a href="{% url 'health_do/5'}">
+    <a href=''  onclick="delayedRedirect('/health_do/training/?videoId=5'); return false;">
     <section class="img_box">
         <img src="{% static 'main/thumnails/swing_waist.jpg' %}" alt="고관절 돌리기">
 <!--        <img src="../../static/main/thumnails/swing_waist.jpg" alt="고관절 돌리기">-->
         <label>고관절 돌리기</label>
     </section>
     </a>
-    <a href="{% url 'health_do/6'}">
+    <a href=''  onclick="delayedRedirect('/health_do/training/?videoId=6'); return false;">
     <section class="img_box">
         <img src="{% static 'main/thumnails/TFlystep.jpg' %}" alt="T 플라이 스텝">
 <!--        <img src="../../static/main/thumnails/TFlystep.jpg" alt="T 플라이 스텝">-->
         <label>T 플라이 스텝</label>
     </section>
     </a>
-    <a href="{% url 'health_do/7'}">
+    <a href=''  onclick="delayedRedirect('/health_do/training/?videoId=7'); return false;">
     <section class="img_box">
         <img src="{% static 'main/thumnails/uppercut.jpg' %}" alt="어퍼컷 펀치">
 <!--        <img src="../../static/main/thumnails/uppercut.jpg" alt="어퍼컷 펀치">-->
         <label>어퍼컷 펀치</label>
     </section>
     </a>
-    <a href="{% url 'health_do/8'}">
+    <a href=''  onclick="delayedRedirect('/health_do/training/?videoId=8'); return false;">
     <section class="img_box">
         <img src="{% static 'main/thumnails/waist.jpg' %}" alt="옆구리 늘리기 앤 사이드스텝">
 <!--        <img src="../../static/main/thumnails/waist.jpg" alt="옆구리 늘리기 앤 사이드스텝">-->
         <label>옆구리 늘리기&사이드스텝</label>
     </section>
     </a>
-    <a href="{% url 'health_do/9'}">
+    <a href=''  onclick="delayedRedirect('/health_do/training/?videoId=9'); return false;">
     <section class="img_box">
         <img src="{% static 'main/thumnails/woodchop.jpg' %}" alt="우드촙 변형">
 <!--        <img src="../../static/main/thumnails/woodchop.jpg" alt="우드촙 변형">-->
@@ -83,6 +93,17 @@
     </section>
     </a>
 </div>
-
+<script>
+    function delayedRedirect(url) {
+        var loadingBox = document.querySelector('.loading_box');
+        loadingBox.style.display="block";
+        //실제로는 3초만 기다리는게 아니라, DB에서 파일 찾기
+        //유저_9/*id*/.mp4가 존재하는지. 있으면 바로 이동, 없으면 views.py로 fetch요청
+        //fetch요청을 보내면 python모델을 실행해서 학습된 모델로 영상을 생성해서 로컬에 저장하고 DB에도 저장. 
+        setTimeout(function() {
+            window.location.href = url;
+        }, 3000); // 3초 후에 링크로 이동합니다. 필요에 따라 시간을 조정하세요.
+    }
+</script>
 </body>
 </html>

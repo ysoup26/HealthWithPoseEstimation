@@ -4,7 +4,7 @@
     {% load static %}
 <!--    <link rel="stylesheet" href="{% static 'polls/style.css' %}">-->
 <!--    <link rel="stylesheet" href='../../static/main/style.css'>-->
-    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
@@ -17,9 +17,13 @@
 </head>
 <body class="main_body">
 <h1 class="page_title">나의 코치, 나</h1>
-<div class="container">
+<div class="container" style="padding: 20px;">
         <form method="POST">
             {% csrf_token %}
+            <label class="warning"> 
+                {{error}}
+            </label>
+            <br>
             <label for="username" class="text">아이디:</label>
             <input name="username" type="text" value="" class="text input_box">
             <br>
@@ -50,7 +54,30 @@
             <br>
             <input type="checkbox" name="exercise_area" value="knee"> <label for="username" class="text" style="font-size: 22px;">종아리</label>
             <br>
+            <button class="btn btnBlue"id="createVideoSourceBtn">영상 촬영</button>
             <br>
+            {% comment %}
+
+             <script>
+                document.getElementById("createVideoSourceBtn").addEventListener("click", function(event) {
+                    event.preventDefault(); // 폼 제출 기본 동작 중지
+
+                    // "camera_view.html" 파일을 새 창으로 열기
+                    var newWindow = window.open("camera_view", "_blank");
+                    newWindow.focus();
+                });
+            </script> {% endcomment %}
+            <script>
+                document.getElementById("createVideoSourceBtn").addEventListener("click", function(event) {
+                    event.preventDefault(); // 폼 제출 기본 동작 중지
+
+                    this.innerText = "재촬영"; // 버튼 텍스트 변경
+
+                    // "camera_view.html" 파일을 새 창으로 열기
+                    var newWindow = window.open("camera_view", "_blank");
+                    newWindow.focus();
+                });
+            </script>
             <input class="btn btnGray" type="submit" value="회원가입">
         </form>
     </div>

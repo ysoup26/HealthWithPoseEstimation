@@ -3,50 +3,95 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Main</title>
+    <title>결과 보고서</title>
     <!-- https://theus.github.io/chart.css/ -->
     <!-- Downloaded chart.css -->
-    <link rel="stylesheet" href="chart.css">
     <!-- RawGit CDN chart.css -->
     <link rel="stylesheet" href="https://cdn.rawgit.com/theus/chart.css/v1.0.0/dist/chart.css" />
+    <link rel="stylesheet" href="{% static 'health_do/css/style.css' %}">
+<!--  폰트 스타일링을 위한 링크  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-    </header>
-    <nav></nav>
     <main>
-        <h2 style="text-align: center;">결과 보고서</h2>
-        <div style="border:1px solid black;padding:30px">
-            <h4>
-                분석 결과, ㅁㅁ님은 {{bad}} 운동이 부족한 것 같습니다.
-            </h4>
-            <div>
-                <h4>그래프</h4>            
-                <div class="charts"><!-- /.charts -->
-                    <span>팔</span>
+        <div class="title_box">
+            <h1 class="page_title">결과 보고서</h1>
+        </div>
+        <div class="report_box report_txt">
+            <!--     수정된 부분 : <h4> >> <label>       -->
+            <label class="report_txt">
+                분석 결과, 부족한 운동 부위는 <span style="color:blue">{{bad}}</span> 입니다.
+            </label>
+            <br>
+            <label class="report_txt">
+                아래의 그래프를 보면서 어느 부위가 얼마나 틀렸는지 살펴보세요!
+            </label>
+            <br>
+            <br>
+            <!--     수정된 부분 : <h4>+<div> >> fieldset + legend       -->
+            <fieldset style="margin-bottom: 50px;width:70%; margin-left: auto; margin-right: auto;" class="report_txt">
+                <legend class="report_txt graph_title">운동 결과 그래프</legend>
+                <div style="font-size: 18px;" class="charts"><!-- /.charts -->
+                    <span>팔꿈치 위 팔</span>
                     <div class="charts__chart chart--p{{bad_percent.arm}}" data-percent></div>
-                    <span>팔꿈치</span>
+                    <span>팔꿈치 아래 팔</span>
                     <div class="charts__chart chart--p{{bad_percent.elbow}}" data-percent></div>
                     <span>허리</span>
                     <div class="charts__chart chart--p{{bad_percent.waist}}" data-percent></div>
-                    <span>다리</span>
+                    <span>허벅지</span>
                     <div class="charts__chart chart--p{{bad_percent.leg}}" data-percent></div>
-                    <span>발목</span>
+                    <span>종아리</span>
                     <div class="charts__chart chart--p{{bad_percent.knee}}" data-percent></div>
                 </div>
-            </div>
-            <h4>정확하게 따라하지 못한 부분입니다:</h4>
+            </fieldset>
+            <label>방금 운동 영상에서 가장 정확하게 따라하지 못한 부분입니다.</label>
+            <br>
+            <label>다음에는 더 정확하게 따라해봅시다!</label>
+            <br>
+            <br>
             <div>
-                <img style="display:inline-block" src="{% static 'health_do/user_images/{{bad_img}}.jpg' %}" width="30%">
-                <img style="display:inline-block" src="{% static 'health_do/user_images/{{bad_img_rec}}.jpg' %}" width="30%">
+                <img style="display:inline-block" src="/static/health_do/user_images/{{bad_img}}.jpg" width="30%">
+                <img style="display:inline-block" src="/static/health_do/user_images/{{bad_img_rec}}.jpg" width="30%">
             </div>
-            <h4>분석을 바탕으로 운동을 추천해 드리겠습니다.</h4>
-            <h3>콘텐츠 기반 추천: {{rec_cont}}</h3>
-            <h3>협업필터링 기반 추천: {{rec_coll}}</h3>
-            <a href="/health_do/training/?videoId={{rec_cont_videoId}}"><img src="{% static 'health_do/thumnails/{{rec_cont}}.jpg' %}" width="30%"></a>
-            <a href="/health_do/training/?videoId={{rec_coll_videoId}}"><img src="{% static 'health_do/thumnails/{{rec_coll}}.jpg' %}" width="30%"></a>
-        </div>
-        
+            <label>방금 하신 운동을 바탕으로 한 운동 추천입니다.</label>
+            <br>
+            <label>다음 운동은 아래 운동 중에서 골라보세요!</label>
+            <br>
+            <br>
+            <!--     수정된 부분 : <h3>+<img> >> table       -->
+            <table class="recommending">
+                <tr>
+                    <td>
+                        <label>부족했던 부위를 보완할 수 있는 운동 </label>
+                    </td>
+                    <td>
+                        <label>유사한 다른 사람들이 부족했던 부위 운동</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="/health_do/training/?videoId={{rec_cont_videoId}}"><img src="/static/health_do/thumnails/{{rec_cont}}.jpg" width="30%"></a>
+                    </td>
+                    <td>
+                        <a href="/health_do/training/?videoId={{rec_coll_videoId}}"><img src="/static/health_do/thumnails/{{rec_coll}}.jpg" width="30%"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>{{rec_cont}}</label>
+                    </td>
+                    <td>
+                        <label>{{rec_coll}}</label>
+                    </td>
+                </tr>
+            </table>
+            <br>
+        </div>        
     </main>
 </body>
 </html>

@@ -10,6 +10,7 @@ urlpatterns = [
                   path('login/', views.login, name="login"),
                   path('logout/', views.logout, name='logout'),
                   path('<str:user_id>/select/', views.select, name='select'),
+                  path('signup/camera_view', views.camera_view, name='camera_view'),
                   # path('login/',views.login, name="login"),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
