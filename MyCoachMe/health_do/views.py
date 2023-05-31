@@ -51,9 +51,9 @@ def upload_video(request):
                 file.write(chunk)
         
         # #유저와 전문가 운동비교
-        #compare_result,crosscor_dict = video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professor_video_name)
-        compare_result = "arm" #테스트 용
-        crosscor_dict = {'arm': 6.0879, 'elbow': 4.5701, 'waist': 6.0603, 'leg': 2.354, 'knee': 5.3042}
+        compare_result,crosscor_dict = video_and_dict_pose_cross_correlation(user_video_path,user_img_path,professor_video_name)
+        #compare_result = "arm" #테스트 용
+        ##crosscor_dict = {'arm': 6.0879, 'elbow': 4.5701, 'waist': 6.0603, 'leg': 2.354, 'knee': 5.3042}
         response_data = {
             'message': 'Video uploaded successfully.',
             'compare_result': compare_result,
@@ -77,6 +77,8 @@ def health_report(request):
         user_img = request.GET.get('user_img')
         user_img_csv = request.GET.get('user_img_rec')
         
+        #user_img = 'user_1685502929'#request.GET.get('user_img')
+        #user_img_csv = 'user_1685502929_rec'#request.GET.get('user_img_rec')
         #print(crosscor_dict)
         #print('[test:',crosscor_dict,user_img,user_img_csv)
         
